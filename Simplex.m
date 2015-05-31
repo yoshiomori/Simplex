@@ -56,7 +56,7 @@ function [ind v] = simplex(A, b, c, m, n, x)
  endwhile
 endfunction
 
-%!test
+%!test # Solução ótima encotrada
 %! A = [ 1, 1, 1, 1; 2, 0, 3, 4 ];
 %! b = [ 2; 2 ];
 %! c = [ 2; 2; 2; 2 ];
@@ -67,7 +67,7 @@ endfunction
 %! assert (ind, 0);
 %! assert (v, [ 1; 1; 0; 0 ]);
 
-%!test
+%!test # Custo ótimo menos infinito
 %! A = [ -1, 1, 1, 0; 1, -2, 0, 1 ];
 %! b = [ 1; 2 ];
 %! c = [ -2; -1; 0; 0 ];

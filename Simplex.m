@@ -55,3 +55,25 @@ function [ind v] = simplex(A, b, c, m, n, x)
   invB = I * invB;
  endwhile
 endfunction
+
+%!test
+%! A = [ 1, 1, 1, 1; 2, 0, 3, 4 ];
+%! b = [ 2; 2 ];
+%! c = [ 2; 2; 2; 2 ];
+%! m = 2;
+%! n = 4;
+%! x = [ 1; 1; 0; 0 ];
+%! [ind, v] = simplex(A, b, c, m, n, x);
+%! assert (ind, 0);
+%! assert (v, [ 1; 1; 0; 0 ]);
+
+%!test
+%! A = [ -1, 1, 1, 0; 1, -2, 0, 1 ];
+%! b = [ 1; 2 ];
+%! c = [ -2; -1; 0; 0 ];
+%! m = 2;
+%! n = 4;
+%! x = [ 0; 0; 1; 2 ];
+%! [ind, v] = simplex(A, b, c, m, n, x);
+%! assert (ind, -1);
+%! assert (v, [ -2; 0; -1; 0 ]);

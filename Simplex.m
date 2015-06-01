@@ -72,18 +72,18 @@ function [ind v] = simplex(A, b, c, m, n, x)
  
  # Conduzindo a variável artificial para fora da base
  for l = find(B>n)'
-  j = find(A(l, 1:n), 1);
+  j = find(A(l, N(N<=n)'), 1);
   [ B(l), N(N == j) ] = deal(j, B(l));
   u = invB * A(1:m, j);
   Q = pivoting(u, m, l);
   invB = Q * invB;
  endfor
  
+ # Voltando ao problema original
+ x = v(1:n);
+ N = N(N<=n);
+ 
  disp ("Simplex: Fase 2")
- # Selecionando os indicies básicos e não básicos
- B = find (x != 0);
- N = find (x == 0);
- invB = A(1:m, B) \ eye (m);
  # Fazendo as iterações do método simplex da fase 2
  [B, N, invB, v, ind] = simplex_iteration(A, c, m, n, B, N, invB, x);
 endfunction

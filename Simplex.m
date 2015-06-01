@@ -123,3 +123,12 @@ endfunction
 %! [ind, x, d] = simplex(A, b, c, m, n);
 %! assert (ind, -1);
 %! assert (d, [ 2; 0; 1; 0 ]);
+
+%!test # Problema inviável
+%! A = [ 1, 2, 3, 0; 2, 1, -5, 0; 1, 2, -1, 1 ];
+%! b = [ 15; 20; 10 ];
+%! c = [ -1; -2; -3; 1 ];
+%! m = 3;
+%! n = 4;
+%! [ind, x, d] = simplex(A, b, c, m, n);
+%! assert (ind, 1);

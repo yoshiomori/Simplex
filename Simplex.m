@@ -1,10 +1,5 @@
-function [ind v] = simplex(A, b, c, m, n, x)
- disp ("Simplex: Fase 2")
+function [B, N, invB, v, ind] = simplex_iteration(A, c, m, n, B, N, invB, x)
  nIt = 0;
- # Selecionando os indicies básicos e não básicos
- B = find (x != 0);
- N = find (x == 0);
- invB = A(1:m, B) \ eye (m);
  # Fazendo as iterações do método simplex
  while (1)
   disp (cstrcat ("Iterando ", num2str (nIt++)));
@@ -54,6 +49,16 @@ function [ind v] = simplex(A, b, c, m, n, x)
   I(l,l) /= -u(l);
   invB = I * invB;
  endwhile
+endfunction
+
+function [ind v] = simplex(A, b, c, m, n, x)
+ disp ("Simplex: Fase 2")
+ # Selecionando os indicies básicos e não básicos
+ B = find (x != 0);
+ N = find (x == 0);
+ invB = A(1:m, B) \ eye (m);
+ # Fazendo as iterações do método simplex
+ [B, N, invB, v, ind] = simplex_iteration(A, c, m, n, B, N, invB, x)
 endfunction
 
 %!test # Solução ótima encotrada

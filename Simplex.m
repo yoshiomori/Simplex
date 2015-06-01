@@ -70,6 +70,12 @@ function [ind v] = simplex(A, b, c, m, n, x)
  # Fazendo as iterações do método simplex da fase 1
  [B, N, invB, v, ind] = simplex_iteration(A_aux, c_aux, m, n_aux, B, N, invB, x_aux);
  
+ # Verificando a viabilidade do problema
+ if c_aux'*v
+  # Problema é inviável, terminando o algoritmo
+  break
+ endif
+ 
  # Conduzindo a variável artificial para fora da base
  for l = find(B>n)'
   j = find(A(l, N(N<=n)'), 1);

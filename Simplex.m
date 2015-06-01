@@ -1,3 +1,11 @@
+function Q = pivoting(u, m, l)
+  # função que recebe um vetor coluna u, que vai ser pivoteado,
+  # sua dimenção m e a l-ésima componente de u que será o pivo.
+  Q = eye(m);
+  Q(1:m,l) = u / -u(l);
+  Q(l,l) /= -u(l);
+endfunction
+
 function [B, N, invB, v, ind] = simplex_iteration(A, c, m, n, B, N, invB, x)
  nIt = 0;
  # Fazendo as iterações do método simplex
@@ -44,10 +52,8 @@ function [B, N, invB, v, ind] = simplex_iteration(A, c, m, n, B, N, invB, x)
   x(j) = thetamin;
   x(B(1:m!=l)) -= thetamin * u(1:m!=l);
   # Calculando a invB da próxima iteração
-  I = eye(m);
-  I(1:m,l) = u / -u(l);
-  I(l,l) /= -u(l);
-  invB = I * invB;
+  Q = pivoting(u, m, l)
+  invB = Q * invB;
  endwhile
 endfunction
 

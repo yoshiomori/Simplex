@@ -57,7 +57,8 @@ function [B, N, invB, v, ind] = simplex_iteration(A, c, m, n, B, N, invB, x)
  endwhile
 endfunction
 
-function [ind v] = simplex(A, b, c, m, n)
+function [ind x d] = simplex(A, b, c, m, n)
+ ind = x = d = 0;
  # Inicializando problema auxiliar
  A_aux = [ A, eye(m) ];
  c_aux = [ zeros(n, 1); ones(m, 1) ];
@@ -93,6 +94,12 @@ function [ind v] = simplex(A, b, c, m, n)
  disp ("Simplex: Fase 2")
  # Fazendo as iterações do método simplex da fase 2
  [B, N, invB, v, ind] = simplex_iteration(A, c, m, n, B, N, invB, x);
+ 
+ if ind == 0
+  x = v;
+ elseif ind == -1
+  d = v;
+ endif
 endfunction
 
 %!test # Solução ótima encotrada
@@ -101,9 +108,9 @@ endfunction
 %! c = [ 2; 2; 2; 2 ];
 %! m = 2;
 %! n = 4;
-%! [ind, v] = simplex(A, b, c, m, n);
+%! [ind, x, d] = simplex(A, b, c, m, n);
 %! assert (ind, 0);
-%! assert (v, [ 1; 1; 0; 0 ]);
+%! assert (x, [ 1; 1; 0; 0 ]);
 
 %!test # Custo ótimo menos infinito
 %! A = [ -1, 1, 1, 0; 1, -2, 0, 1 ];
@@ -111,6 +118,6 @@ endfunction
 %! c = [ -2; -1; 0; 0 ];
 %! m = 2;
 %! n = 4;
-%! [ind, v] = simplex(A, b, c, m, n);
+%! [ind, x, d] = simplex(A, b, c, m, n);
 %! assert (ind, -1);
-%! assert (v, [ -2; 0; -1; 0 ]);
+%! assert (d, [ -2; 0; -1; 0 ]);

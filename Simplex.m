@@ -57,7 +57,7 @@ function [B, N, invB, v, ind] = simplex_iteration(A, c, m, n, B, N, invB, x)
  endwhile
 endfunction
 
-function [ind v] = simplex(A, b, c, m, n, x)
+function [ind v] = simplex(A, b, c, m, n)
  # Inicializando problema auxiliar
  A_aux = [ A, eye(m) ];
  c_aux = [ zeros(n, 1); ones(m, 1) ];
@@ -100,8 +100,7 @@ endfunction
 %! c = [ 2; 2; 2; 2 ];
 %! m = 2;
 %! n = 4;
-%! x = [ 1; 1; 0; 0 ];
-%! [ind, v] = simplex(A, b, c, m, n, x);
+%! [ind, v] = simplex(A, b, c, m, n);
 %! assert (ind, 0);
 %! assert (v, [ 1; 1; 0; 0 ]);
 
@@ -111,7 +110,6 @@ endfunction
 %! c = [ -2; -1; 0; 0 ];
 %! m = 2;
 %! n = 4;
-%! x = [ 0; 0; 1; 2 ];
-%! [ind, v] = simplex(A, b, c, m, n, x);
+%! [ind, v] = simplex(A, b, c, m, n);
 %! assert (ind, -1);
 %! assert (v, [ -2; 0; -1; 0 ]);

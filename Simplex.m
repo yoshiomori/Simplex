@@ -48,11 +48,11 @@ function [B, N, invB, v, ind] = simplex_iteration(A, c, m, n, B, N, invB, x)
   disp ("Theta*");
   disp (thetamin);
   disp (cstrcat ("Sai da base: ", num2str(B(l))));
-  [ x(B(l)), B(l), N(find(N == j)) ] = deal (0, j, B(l));
+  [ x(B(l)), B(l), N(N == j) ] = deal (0, j, B(l));
   x(j) = thetamin;
   x(B(1:m!=l)) -= thetamin * u(1:m!=l);
   # Calculando a invB da próxima iteração
-  Q = pivoting(u, m, l)
+  Q = pivoting(u, m, l);
   invB = Q * invB;
  endwhile
 endfunction
@@ -69,6 +69,15 @@ function [ind v] = simplex(A, b, c, m, n, x)
  
  # Fazendo as iterações do método simplex da fase 1
  [B, N, invB, v, ind] = simplex_iteration(A_aux, c_aux, m, n_aux, B, N, invB, x_aux);
+ 
+ # Conduzindo a variável artificial para fora da base
+ for l = find(B>n)'
+  j = find(A(l, 1:n), 1);
+  [ B(l), N(N == j) ] = deal(j, B(l));
+  u = invB * A(1:m, j);
+  Q = pivoting(u, m, l);
+  invB = Q * invB;
+ endfor
  
  disp ("Simplex: Fase 2")
  # Selecionando os indicies básicos e não básicos

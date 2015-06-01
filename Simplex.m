@@ -61,19 +61,22 @@ function [ind v] = simplex(A, b, c, m, n, x)
  # Inicializando problema auxiliar
  A_aux = [ A, eye(m) ];
  c_aux = [ zeros(n, 1); ones(m, 1) ];
- m_aux = m + n;
+ n_aux = m + n;
  x_aux = [ zeros(n, 1); b ];
  B = [ n + 1:n + m ]';
  N = [ 1:n ]';
  invB = eye(m);
+ 
+ # Fazendo as iterações do método simplex da fase 1
+ [B, N, invB, v, ind] = simplex_iteration(A_aux, c_aux, m, n_aux, B, N, invB, x_aux);
  
  disp ("Simplex: Fase 2")
  # Selecionando os indicies básicos e não básicos
  B = find (x != 0);
  N = find (x == 0);
  invB = A(1:m, B) \ eye (m);
- # Fazendo as iterações do método simplex
- [B, N, invB, v, ind] = simplex_iteration(A, c, m, n, B, N, invB, x)
+ # Fazendo as iterações do método simplex da fase 2
+ [B, N, invB, v, ind] = simplex_iteration(A, c, m, n, B, N, invB, x);
 endfunction
 
 %!test # Solução ótima encotrada

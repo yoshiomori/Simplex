@@ -36,7 +36,7 @@ function [B, N, invB, v, ind] = simplex_iteration(A, c, m, n, B, N, invB, x)
    # Nenhuma componete de u é positiva, terminando o algoritmo
    ind = -1;
    v = zeros (n, 1);
-   v(B) = u;
+   v(B) = -u;
    disp ("Problema é ilimitado com custo menos infinito:");
    disp (v);
    break;
@@ -68,12 +68,14 @@ function [ind x d] = simplex(A, b, c, m, n)
  N = [ 1:n ]';
  invB = eye(m);
  
+ disp ("Simplex: Fase 1")
  # Fazendo as iterações do método simplex da fase 1
  [B, N, invB, v, ind] = simplex_iteration(A_aux, c_aux, m, n_aux, B, N, invB, x_aux);
  
  # Verificando a viabilidade do problema
  if c_aux'*v
   # Problema é inviável, terminando o algoritmo
+   disp ("Problema é inviável.");
   ind = 1;
   break
  endif
@@ -120,4 +122,4 @@ endfunction
 %! n = 4;
 %! [ind, x, d] = simplex(A, b, c, m, n);
 %! assert (ind, -1);
-%! assert (d, [ -2; 0; -1; 0 ]);
+%! assert (d, [ 2; 0; 1; 0 ]);

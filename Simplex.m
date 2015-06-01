@@ -73,6 +73,7 @@ function [ind v] = simplex(A, b, c, m, n)
  # Verificando a viabilidade do problema
  if c_aux'*v
   # Problema é inviável, terminando o algoritmo
+  ind = 1;
   break
  endif
  

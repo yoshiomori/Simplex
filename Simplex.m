@@ -1,6 +1,6 @@
 function Q = pivoting(u, m, l)
   # função que recebe um vetor coluna u, que vai ser pivoteado,
-  # sua dimenção m e a l-ésima componente de u que será o pivo.
+  # sua dimensão m e a l-ésima componente de u que será o pivo.
   Q = eye(m);
   Q(1:m,l) = u / -u(l);
   Q(l,l) /= -u(l);
@@ -59,6 +59,14 @@ endfunction
 
 function [ind x d] = simplex(A, b, c, m, n)
  ind = x = d = 0;
+ 
+ # Fazendo b >= 0
+ i = find (b<0);
+ if(i)
+  A(i, 1:n) = -A(i, 1:n);
+  b(i) = -b(i);
+ endif
+ 
  # Inicializando problema auxiliar
  A_aux = [ A, eye(m) ];
  c_aux = [ zeros(n, 1); ones(m, 1) ];
@@ -107,6 +115,16 @@ endfunction
 %!test # Solução ótima encotrada
 %! A = [ 1, 1, 1, 1; 2, 0, 3, 4 ];
 %! b = [ 2; 2 ];
+%! c = [ 2; 2; 2; 2 ];
+%! m = 2;
+%! n = 4;
+%! [ind, x, d] = simplex(A, b, c, m, n);
+%! assert (ind, 0);
+%! assert (x, [ 1; 1; 0; 0 ]);
+
+%!test # Solução ótima encotrada com b(2) < 0
+%! A = [ 1, 1, 1, 1; -2, 0, -3, -4 ];
+%! b = [ 2; -2 ];
 %! c = [ 2; 2; 2; 2 ];
 %! m = 2;
 %! n = 4;
